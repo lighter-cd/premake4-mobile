@@ -104,6 +104,13 @@
 			_p('include $(BUILD_STATIC_LIBRARY)')
 		else
 			_p('include $(BUILD_SHARED_LIBRARY)')
-		end
-		
 	end
+
+	if prj.ndkmodules ~= nil and #prj.ndkmodules > 0 then
+		local static_lib_deps = {}
+		for _, module in ipairs(prj.ndkmodules) do
+			_p('$(call import-module,%s)',module)
+		end			
+	end
+		
+end

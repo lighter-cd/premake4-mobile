@@ -24,7 +24,8 @@
 			cc     = { "gcc" },
 		},
 		
-		onsolution = function(sln)
+		onsolution = function (sln)
+			premake.generate(sln, "jni/Application.mk", android.applicationmk)
 			premake.generate(sln, "jni/Android.mk", android.androidmk)
 		end,
 
