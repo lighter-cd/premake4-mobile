@@ -65,6 +65,17 @@
 				end
 			end
 			
+			if prj.ndkmodule_sharedlinks ~= nil and #prj.ndkmodule_sharedlinks > 0 then
+				for _, module in ipairs(prj.ndkmodule_sharedlinks) do
+					table.insert(shared_lib_deps, module)
+				end			
+			end
+			if prj.ndkmodule_staticlinks ~= nil and #prj.ndkmodule_staticlinks > 0 then
+				for _, module in ipairs(prj.ndkmodule_staticlinks) do
+					table.insert(static_lib_deps, module)
+				end			
+			end
+
 			if #static_lib_deps > 0 then
 				_p(1, 'LOCAL_STATIC_LIBRARIES := \\\n\t\t%s', table.concat(static_lib_deps, " \\\n\t\t"))
 				_p('')
@@ -106,9 +117,8 @@
 			_p('include $(BUILD_SHARED_LIBRARY)')
 	end
 
-	if prj.ndkmodules ~= nil and #prj.ndkmodules > 0 then
-		local static_lib_deps = {}
-		for _, module in ipairs(prj.ndkmodules) do
+	if prj.ndkmodule_imports ~= nil and #prj.ndkmodule_imports > 0 then
+		for _, module in ipairs(prj.ndkmodule_imports) do
 			_p('$(call import-module,%s)',module)
 		end			
 	end

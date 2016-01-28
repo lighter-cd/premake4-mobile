@@ -455,13 +455,24 @@
 		},
 		
 		-- for android.mk projects, specify the android ndk modules
-		ndkmodules =
+		ndkmodule_imports =
+		{
+			kind = "list",
+			scope = "config",
+		},
+		ndkmodule_sharedlinks =
+		{
+			kind = "list",
+			scope = "config",
+		},
+		ndkmodule_staticlinks =
 		{
 			kind = "list",
 			scope = "config",
 		},
 		
-		ndkabi =
+		
+	ndkabi =
 		{
 		  kind = "string",
 		  scope = "solution",

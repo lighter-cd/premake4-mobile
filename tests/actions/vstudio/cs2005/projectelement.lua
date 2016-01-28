@@ -72,3 +72,12 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		]]
 	end
+
+function suite.On2015()
+	_ACTION = "vs2015"
+	prepare()
+	test.capture [[
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		]]
+	end

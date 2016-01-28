@@ -1,24 +1,25 @@
 -- Function to make sure that an option in a given config is the same for every project
 -- Additionnaly, replace "default" with "nil"
-local function agregateOption(sln, cfg, option)
+local function isReleaseOptimize(sln)
   local first = true
   local val
   for prj in premake.solution.eachproject(sln) do
     for prjcfg in premake.eachconfig(prj) do
-      if prjcfg.shortname == cfg.shortname then
+      if prjcfg.shortname == "release" then
         if first then
           first = false
-          val = prjcfg[option]
+          val = prjcfg.flags.Optimize or prjcfg.flags.OptimizeSize or prjcfg.flags.OptimizeSpeed
         else
-          if prjcfg[option] ~= val then
-            error("Value for "..option.." must be the same on every project for configuration "..cfg.longname.." in solution "..sln.name)
-          end
+            local this_val = prjcfg.flags.Optimize or prjcfg.flags.OptimizeSize or prjcfg.flags.OptimizeSpeed
+            if  this_val ~= val then
+                error("Value for Optimize flag must be the same on every project for configuration "..cfg.longname.." in solution "..sln.name)
+            end
         end
       end
     end
   end
   if val == "default" then
-    return nil
+    return false
   end
   return val
 end
@@ -41,9 +42,10 @@ function premake.android.applicationmk(sln)
 			_p('  APP_STL := %s', sln.ndkstl)
 		end
 
-		if sln.optimize == p.OFF or sln.optimize == "Debug" then
+		local opti = isReleaseOptimize(sln)
+        if not opti then
 			_p('  APP_OPTIM := debug')
-		elseif sln.optim ~= nil then
+		else
 			_p('  APP_OPTIM := release')
 		end
 	end

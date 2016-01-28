@@ -3,7 +3,9 @@
 -- Baseline support for Visual Studio 2013.
 -- Copyright (c) 2013 Jason Perkins and the Premake project
 --
-
+	premake.vstudio.vc2013 = {}
+	local vc2013 = premake.vstudio.vc2013
+	local vstudio = premake.vstudio
 
 ---
 -- Register a command-line action for Visual Studio 2012.
@@ -47,7 +49,10 @@
 
 		vstudio = {
 			solutionVersion = "12",
+			versionName     = "2013",
 			targetFramework = "4.5",
 			toolsVersion    = "12.0",
+			filterToolsVersion = "4.0",
+			platformToolset = "v120"			
 		}
 	}
