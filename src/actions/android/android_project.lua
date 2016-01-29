@@ -37,7 +37,17 @@
 				_p('')
 			end
 			
-			_p(1, "LOCAL_C_INCLUDES := \\\n\t\t%s", table.concat(cfg.includedirs, " \\\n\t\t"))
+			-- jni has to add "../"
+            include_dirs = ""
+            for _,v in ipairs(cfg.includedirs) do
+                local f = string.find(v,'%$%(')
+				if  f == nil then 
+                    include_dirs = include_dirs .. " \\\n\t\t../" .. v
+                else
+                    include_dirs = include_dirs .. " \\\n\t\t" .. v
+                end
+			end			
+            _p(1, "LOCAL_C_INCLUDES := %s", include_dirs)
 			_p('')
 			
 			src_files = ""
@@ -65,15 +75,17 @@
 				end
 			end
 			
-			if prj.ndkmodule_sharedlinks ~= nil and #prj.ndkmodule_sharedlinks > 0 then
-				for _, module in ipairs(prj.ndkmodule_sharedlinks) do
-					table.insert(shared_lib_deps, module)
-				end			
-			end
-			if prj.ndkmodule_staticlinks ~= nil and #prj.ndkmodule_staticlinks > 0 then
-				for _, module in ipairs(prj.ndkmodule_staticlinks) do
-					table.insert(static_lib_deps, module)
-				end			
+			if prj.kind ~= "StaticLib" then
+                if prj.ndkmodule_sharedlinks ~= nil and #prj.ndkmodule_sharedlinks > 0 then
+                    for _, module in ipairs(prj.ndkmodule_sharedlinks) do
+                        table.insert(shared_lib_deps, module)
+                    end			
+                end
+                if prj.ndkmodule_staticlinks ~= nil and #prj.ndkmodule_staticlinks > 0 then
+                    for _, module in ipairs(prj.ndkmodule_staticlinks) do
+                        table.insert(static_lib_deps, module)
+                    end			
+                end
 			end
 
 			if #static_lib_deps > 0 then
@@ -117,10 +129,12 @@
 			_p('include $(BUILD_SHARED_LIBRARY)')
 	end
 
-	if prj.ndkmodule_imports ~= nil and #prj.ndkmodule_imports > 0 then
-		for _, module in ipairs(prj.ndkmodule_imports) do
-			_p('$(call import-module,%s)',module)
-		end			
-	end
+    if prj.kind ~= "StaticLib" then
+        if prj.ndkmodule_imports ~= nil and #prj.ndkmodule_imports > 0 then
+            for _, module in ipairs(prj.ndkmodule_imports) do
+                _p('$(call import-module,%s)',module)
+            end			
+        end
+	end	
 		
 end
