@@ -782,7 +782,15 @@
 			Universal = "$(ARCHS_STANDARD_32_64_BIT)",
 			arm = "$(ARCHS_STANDARD)",
 		}
-		_p(4,'ARCHS = "%s";', archs[cfg.platform])
+		
+		-- ios not need this
+		if os.get() ~= "ios" then
+			_p(4,'ARCHS = "%s";', archs[cfg.platform])
+		end
+		
+		if cfg.shortname == "debug" then
+		    _p(4,'ENABLE_TESTABILITY = YES;')
+		end
 		
 		local targetdir = path.getdirectory(cfg.buildtarget.bundlepath)
 		if targetdir ~= "." then
