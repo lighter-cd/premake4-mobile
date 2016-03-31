@@ -257,7 +257,7 @@
 		_p(1,'archiveVersion = 1;')
 		_p(1,'classes = {')
 		_p(1,'};')
-		_p(1,'objectVersion = 45;')
+		_p(1,'objectVersion = 46;')
 		_p(1,'objects = {')
 		_p('')
 	end
