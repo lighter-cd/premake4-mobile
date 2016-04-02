@@ -39,7 +39,8 @@
 			[".icns"] = "Resources",
 			[".bmp"] = "Resources",
 			[".wav"] = "Resources",
-		}
+			[".xcassets"] = "Resources",
+    }
 		return categories[path.getextension(node.name)]
 	end
 
@@ -99,7 +100,8 @@
 			[".icns"]      = "image.icns",
 			[".bmp"]       = "image.bmp",
 			[".wav"]       = "audio.wav",
-		}
+			[".xcassets"]  = "folder.assetcatalog",
+    }
 		return types[path.getextension(node.path)] or "text"
 	end
 
